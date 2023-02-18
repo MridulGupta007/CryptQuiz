@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Herosection from "../components/Herosection";
 import Navbar from "../components/Navbar";
 import Quizes from "../components/Quizes";
@@ -10,6 +11,7 @@ const Home = () => {
       <Herosection />
       <Quizes />
       <Team />
+      <Footer />
     </div>
   );
 };

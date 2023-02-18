@@ -1,9 +1,8 @@
 import React from "react";
 import { ReactComponent as Logo } from "../assets/logo.svg";
-
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center px-12 xl:px-32 h-16 bg-black">
+    <div className="flex justify-between items-center px-12 xl:px-32 h-20 bg-black">
       <Logo className="h-5 w-32" />
 
       <ul className="flex items-center font-semibold">
