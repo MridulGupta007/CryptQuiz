@@ -1,11 +1,11 @@
-
+import Home from "./pages/Home";
 
 function App() {
-    return (
-        <div className="bg-bg text-white font-inter">
-            <h1 className="font-mammoth text-6xl text-center">CryptQuiz</h1>
-        </div>
-    );
+  return (
+    <>
+      <Home />
+    </>
+  );
 }
 
 export default App;
