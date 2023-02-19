@@ -11,13 +11,8 @@ let imageCID="";
 
 
 
-const CONTRACT_ADDRESS = "0xF7A3330fD311807E41957DfeC29Cf5272a8C3091";
+const CONTRACT_ADDRESS = "0x01c42F471047086Bd1773453237bf04414Dc676B";
 const ABI = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
 	{
 		"inputs": [
 			{
@@ -50,6 +45,113 @@ const ABI = [
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_theme",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_prizeMoney",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_questionCID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_imageCID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_descriptionCID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_totalQuestions",
+				"type": "uint256"
+			}
+		],
+		"name": "listQuiz",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_winner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "prizeDispersal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_score",
+				"type": "uint256"
+			}
+		],
+		"name": "setLeaderboard",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_totalParticipants",
+				"type": "uint256"
+			}
+		],
+		"name": "setQuiztotalParticipants",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
 		"inputs": [
@@ -305,7 +407,7 @@ const ABI = [
 				"type": "uint256"
 			}
 		],
-		"name": "getQuizTotalQuestions",
+		"name": "getQuiztotalParticipants",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -324,7 +426,7 @@ const ABI = [
 				"type": "uint256"
 			}
 		],
-		"name": "getQuiztotalParticipants",
+		"name": "getQuizTotalQuestions",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -384,72 +486,6 @@ const ABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_theme",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_time",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_prizeMoney",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_questionCID",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_imageCID",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_descriptionCID",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_totalQuestions",
-				"type": "uint256"
-			}
-		],
-		"name": "listQuiz",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_winner",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_quizId",
-				"type": "uint256"
-			}
-		],
-		"name": "prizeDispersal",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "quizId",
 		"outputs": [
@@ -461,49 +497,8 @@ const ABI = [
 		],
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_quizId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_score",
-				"type": "uint256"
-			}
-		],
-		"name": "setLeaderboard",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_quizId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_totalParticipants",
-				"type": "uint256"
-			}
-		],
-		"name": "setQuiztotalParticipants",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	}
 ];
-
-
-
-
-
 
 
 function getAccessToken() {

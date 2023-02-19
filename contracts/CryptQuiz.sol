@@ -5,17 +5,13 @@ contract CryptQuiz {
     struct Quiz {
         string name;
         address manager;
-        //(gas fees + winning amount)
-        uint256 totalFund;
         string theme;
         uint256 startTime;
-        //(totalFund - gas fees)
         uint256 prizeMoney;
-        //uint remainingAmount;
-
         uint256 totalQuestions;
         string imageCID;
         string questionCID;
+        string descriptionCID;
         uint256 totalParticipants;
         uint256[] leaderboard;
         bool isExpired;
@@ -31,8 +27,6 @@ contract CryptQuiz {
         mapping(uint256 => uint256) rank;
     }
 
-    uint256 constant MINAMOUNT = 1500000000000000000;
-    uint256 constant GASFEES = 300000000000000000;
     uint256 public quizId;
     address owner;
 
@@ -59,47 +53,35 @@ contract CryptQuiz {
         string memory _name,
         string memory _theme,
         uint256 _time,
-        uint256 _totalFund,
+        uint256 _prizeMoney,
         string memory _questionCID,
         string memory _imageCID,
+        string memory _descriptionCID,
         uint256 _totalQuestions
     ) public payable {
-        require(msg.value == _totalFund);
-        require(_totalFund > GASFEES);
-
         quizId++;
 
         quizzes[quizId].name = _name;
 
         quizzes[quizId].manager = msg.sender;
 
-        quizzes[quizId].totalFund = _totalFund;
-
         quizzes[quizId].theme = _theme;
 
         quizzes[quizId].startTime = _time;
 
-        quizzes[quizId].prizeMoney = _totalFund - GASFEES;
+        quizzes[quizId].prizeMoney = _prizeMoney;
 
         quizzes[quizId].totalQuestions = _totalQuestions;
 
         quizzes[quizId].imageCID = _imageCID;
 
+        quizzes[quizId].descriptionCID = _descriptionCID;
+
         quizzes[quizId].questionCID = _questionCID;
     }
 
-    function prizeDispersal(
-        address _winner,
-        uint256 _quizId,
-        uint256 _usedGas
-    ) public {
-        require(
-            block.timestamp > quizzes[_quizId].startTime,
-            "Quiz has not been ended yet"
-        );
+    function prizeDispersal(address _winner, uint256 _quizId) public {
         payable(_winner).transfer(quizzes[_quizId].prizeMoney);
-        uint256 _remainingAmount = GASFEES - _usedGas;
-        payable(quizzes[_quizId].manager).transfer(_remainingAmount);
         quizzes[_quizId].isExpired = true;
     }
 
@@ -124,20 +106,8 @@ contract CryptQuiz {
         return quizzes[_quizId].name;
     }
 
-    function getQuizRemainingTime(uint256 _quizId)
-        public
-        view
-        returns (uint256)
-    {
-        return quizzes[_quizId].startTime - block.timestamp;
-    }
-
     function getQuizManager(uint256 _quizId) public view returns (address) {
         return quizzes[_quizId].manager;
-    }
-
-    function getQuizTotalFund(uint256 _quizId) public view returns (uint256) {
-        return quizzes[_quizId].totalFund;
     }
 
     function getQuizTheme(uint256 _quizId) public view returns (string memory) {
@@ -174,6 +144,14 @@ contract CryptQuiz {
         returns (string memory)
     {
         return quizzes[_quizId].imageCID;
+    }
+
+    function getQuizDescriptionCID(uint256 _quizId)
+        public
+        view
+        returns (string memory)
+    {
+        return quizzes[_quizId].descriptionCID;
     }
 
     function getQuiztotalParticipants(uint256 _quizId)
@@ -234,5 +212,13 @@ contract CryptQuiz {
         returns (uint256)
     {
         return users[walletId].rank[_quizId];
+    }
+
+    function getPastQuizes(string memory walletId)
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return users[walletId].pastQuizId;
     }
 }
