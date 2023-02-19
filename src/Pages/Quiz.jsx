@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import GradientButton from '../Components/GradientButton'
 import { QuizContext } from '../Context/QuizHolder'
+import Timer from '../Components/TImer'
 
 export default function Quiz() {
 
@@ -12,8 +13,8 @@ export default function Quiz() {
     return (
         <div className="flex flex-col justify-center items-center xl:px-32 w-full h-full flex-1 gap-[75px]">
             <div className='flex flex-row justify-center items-center px-[30px] py-[20px] bg-black/25 rounded-[20px] font-extrabold leading-[48px] border-white/10 border-primaryWidth'>
-                <p className='text-white text-3xl mr-[5px]'>28</p>
-                <span className="text-white/50 text-2xl">seconds left</span>
+                <p className='text-white text-3xl mr-[5px]'>{<Timer />}</p>
+                
             </div>
 
             <div className='flex flex-col justify-center items-center p-[25px] gap-[50px] w-full h-full bg-black/25 border-white/10 border-primaryWidth rounded-3xl'>
@@ -51,7 +52,7 @@ export default function Quiz() {
                 </div>
 
                 <NavLink to="/quiz-result" className="w-full" replace={true}>
-                    <GradientButton className="font-bold" text={"Submit"} />
+                    <GradientButton className="font-bold" text={"Next"} />
                 </NavLink>
             </div>
         </div>
