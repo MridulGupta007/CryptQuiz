@@ -3,9 +3,46 @@ import GradientButton from '../Components/GradientButton';
 
 import { Web3Storage } from 'web3.storage'
 
+const CONTRACT_ADDRESS = "";
+const ABI = [
+  
+];
+
+
+// const ListQuiz = async () => {
+//     try {
+//     console.log("Begin");
+//     const { ethereum } = window;
+//     if (ethereum) {
+//       console.log("Going to pop wallet to connect")
+//       const provider = new ethers.providers.Web3Provider(ethereum);
+//       const signer = provider.getSigner();
+//       const connectedContract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+//       const accounts = await ethereum.request({ method:"eth_requestAccounts" });
+//       console.log("Connected", accounts[0]);
+    
+//       let listingQuiz = await connectedContract.prizeDispersal(orgName,topic,__time,prize,quesCID,imageCID);
+//       console.log("Listing the Quiz: Process started");
+//       await listingQuiz.wait();
+//       console.log("Listing the Quiz: Process finished");
+    
+//     //   let initialscore = await pelusaconnectedContract.goals();
+//     //   console.log("Initial Score :", initialscore)
+         
+//     }
+//     else {
+//     console.log("Ethereum object doesn't exist!");
+//     }
+//     } catch (error) {
+//     console.log(error)
+//     }
+// }
+
+
 
 function getAccessToken() {
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDI1MDQ3MDFlNEE1QTdGYzZDN2E1MTVEOWQ2NzliMWYwRUJlOTJCQzQiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzAwMzE3NzMxMjUsIm5hbWUiOiJEZW1vV2ViM1N0b3JhZ2UifQ.weNDPksDEyYK9yPiGK1MScTvW28Wi958gzcttMFrVF4'
+
+    return process.env.WEB3STORAGE_TOKEN
 }
 
 
@@ -24,12 +61,14 @@ async function makeFileObjects(questions) {
     return files
 }
 
+
 async function storeFiles(questions) {
     const files = await makeFileObjects(questions);
     console.log("Uploading Questions to IPFS with web3.storage....");
     const client = makeStorageClient()
     const cid = await client.put(files, { wrapWithDirectory: false })
     console.log('stored Questions with cid:', cid)
+    //setQuesCID(cid)
     return cid
 }
 
@@ -38,6 +77,7 @@ const storeImage = async (files) => {
     const client = makeStorageClient();
     const cid = await client.put([files], { wrapWithDirectory: false });
     console.log("Stored Image with cid:", cid);
+    //setImageCID(cid)
     return cid;
 };
 
@@ -48,7 +88,9 @@ export default function AddQuestions() {
     const [topic, setTopic] = useState('');
     const [desc, setDesc] = useState('');
     const [prize, setPrize] = useState('');
-    const [image, setImage] = useState()
+    const [image, setImage] = useState();
+    const [quesCID,setQuesCID] = useState();
+    const [imageCID,setImageCID] = useState();
 
     const [questions, setQuestions] = useState([{ question: "", option1: "", option2: "", option3: "", option4: "" }]);
 

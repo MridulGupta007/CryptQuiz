@@ -1,8 +1,8 @@
-import Footer from "../components/Footer";
-import Herosection from "../components/Herosection";
-import Navbar from "../components/Navbar";
-import Quizes from "../components/Quizes";
-import Team from "../components/Team";
+import Footer from "../Components/Footer";
+import Herosection from "../Components/Herosection";
+import Navbar from "../Components/Navbar";
+import Quizes from "../Components/Quizes";
+import Team from "../Components/Team";
 
 const Home = () => {
   return (
