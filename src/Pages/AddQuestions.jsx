@@ -177,7 +177,7 @@ export default function AddQuestions() {
                         })
                     }
 
-                    <GradientButton text={"Add another question"} className="mb-10" onClick={() => setQuestions([...questions, { question: "", option1: "", option2: "", option3: "", option4: "" }])} />
+                    <GradientButton text={"Add another question"} className="mb-10 w-full" onClick={() => setQuestions([...questions, { question: "", option1: "", option2: "", option3: "", option4: "" }])} />
 
                 </div>
             </div>
@@ -194,7 +194,7 @@ export default function AddQuestions() {
                 </div>
             </div>
 
-            <GradientButton text={"Organize Quiz"} className="mb-10" onClick={handleSubmit} />
+            <GradientButton text={"Organize Quiz"} className="mb-10 w-full" onClick={handleSubmit} />
 
         </div>
     )

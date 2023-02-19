@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import GradientButton from '../Components/GradientButton'
+import { QuizContext } from '../Context/QuizHolder'
 
 export default function Quiz() {
 
     const [selected, setSelected] = useState(null)
+
+    const { setScore } = QuizContext;
 
     return (
         <div className="flex flex-col justify-center items-center xl:px-32 w-full h-full flex-1 gap-[75px]">
