@@ -13,10 +13,10 @@ const Team = () => {
                     </h1>
                     <div className="flex justify-between mt-20 min-w-[60rem] lg:min-w-[80rem]">
                         {/* you can pass images, roles, and links as a prop to these cards */}
-                        <ProfileCard src="./Images/Ankit.png" name="Ankit Choudhary" role="Blockchain Developer"/>
-                        <ProfileCard src="./Images/Atharv.png" name="Atharv Varshney" role="Front-End Developer"/>
-                        <ProfileCard src="./Images/Gourav.png" name="Gourav Kumar" role="Front-End Developer"/>
-                        <ProfileCard src="./Images/Mridul.png" name="Mridul Gupta" role="Front-End Developer"/>
+                        <ProfileCard src="./Images/Ankit.png" name="Ankit Choudhary" roles="Blockchain Developer"/>
+                        <ProfileCard src="./Images/Atharv.png" name="Atharv Varshney" roles="Front-End Developer"/>
+                        <ProfileCard src="./Images/Gourav.png" name="Gourav Kumar" roles="Front-End Developer"/>
+                        <ProfileCard src="./Images/Mridul.png" name="Mridul Gupta" roles="Front-End Developer"/>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@ const Team = () => {
 
 export default Team;
 
-const ProfileCard = ({name, role, src}) => {
+const ProfileCard = ({name, roles, src}) => {
     
     return (
         
@@ -46,7 +46,7 @@ const ProfileCard = ({name, role, src}) => {
             </div>
             <div className="flex flex-col items-center mt-4">
                 <h2 className="font-bold">{name}</h2>
-                <p className="text-gray-600">{role}</p>
+                <p className="text-gray-600">{roles}</p>
             </div>
             <div>
                 <button className="flex mt-3">
