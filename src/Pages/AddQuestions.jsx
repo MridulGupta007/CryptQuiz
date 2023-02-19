@@ -1,7 +1,509 @@
 import React, { useState } from 'react'
 import GradientButton from '../Components/GradientButton';
+import AuthHolder from '../Context/AuthHolder';
+import Web3 from 'web3';
 
 import { Web3Storage } from 'web3.storage'
+
+let questionCID="";
+let descriptionCID="";
+let imageCID="";
+
+
+
+const CONTRACT_ADDRESS = "0xF7A3330fD311807E41957DfeC29Cf5272a8C3091";
+const ABI = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "walletId",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_correctAnswer",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_score",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_rank",
+				"type": "uint256"
+			}
+		],
+		"name": "completedQuiz",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "walletId",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getCorrectAnswer",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "walletId",
+				"type": "string"
+			}
+		],
+		"name": "getPastQuizes",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizDescriptionCID",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getQuizId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizImageCID",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizIsExpired",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizLeaderboard",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizManager",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizOrganizationName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizPrizeMoney",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizQuestionCID",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizTheme",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizTime",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuizTotalQuestions",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getQuiztotalParticipants",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "walletId",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getRank",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "walletId",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "getScore",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_theme",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_time",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_prizeMoney",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_questionCID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_imageCID",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_descriptionCID",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_totalQuestions",
+				"type": "uint256"
+			}
+		],
+		"name": "listQuiz",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_winner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			}
+		],
+		"name": "prizeDispersal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "quizId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_score",
+				"type": "uint256"
+			}
+		],
+		"name": "setLeaderboard",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_quizId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_totalParticipants",
+				"type": "uint256"
+			}
+		],
+		"name": "setQuiztotalParticipants",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+];
+
+
+
+
+
 
 
 function getAccessToken() {
@@ -30,6 +532,17 @@ async function storeFiles(questions) {
     const client = makeStorageClient()
     const cid = await client.put(files, { wrapWithDirectory: false })
     console.log('stored Questions with cid:', cid)
+	questionCID=cid;
+    return cid
+}
+
+async function storeDescription(description) {
+    const files = await makeFileObjects(description);
+    console.log("Uploading Description to IPFS with web3.storage....");
+    const client = makeStorageClient()
+    const cid = await client.put(files, { wrapWithDirectory: false })
+    console.log('stored Description with cid:', cid)
+	descriptionCID=cid;
     return cid
 }
 
@@ -38,11 +551,29 @@ const storeImage = async (files) => {
     const client = makeStorageClient();
     const cid = await client.put([files], { wrapWithDirectory: false });
     console.log("Stored Image with cid:", cid);
+	imageCID=cid;
     return cid;
 };
 
 
 export default function AddQuestions() {
+
+	
+
+	const {auth,account} = AuthHolder();
+	const web3 = new Web3(auth.provider);
+
+	const ListQuiz = async () => {	
+
+	const contract = new web3.eth.Contract(ABI, CONTRACT_ADDRESS)
+	const prizeMoney = web3.utils.toWei(`${prize}`,'ether')
+
+	contract.methods.listQuiz(orgName,topic,noOfQuestions*30,prize,questionCID,imageCID,descriptionCID,noOfQuestions).send({from: `${account}`,value: prizeMoney}, function(error, result){
+  		console.log(result)  
+	})
+
+	}
+
 
     const [orgName, setOrgName] = useState('');
     const [topic, setTopic] = useState('');
@@ -56,7 +587,18 @@ export default function AddQuestions() {
 
         await storeFiles(questions)
         await storeImage(image)
+		await storeDescription(desc)
+		await ListQuiz()
     }
+
+	let noOfQuestions = 1;
+
+	const incQues = () => {
+		setQuestions([...questions, { question: "", option1: "", option2: "", option3: "", option4: "" }])
+		noOfQuestions++;
+	}
+
+
 
 
     return (
@@ -177,8 +719,8 @@ export default function AddQuestions() {
                         })
                     }
 
-                    <GradientButton text={"Add another question"} className="mb-10 w-full" onClick={() => setQuestions([...questions, { question: "", option1: "", option2: "", option3: "", option4: "" }])} />
-
+                    <GradientButton text={"Add another question"} className="mb-10 w-full" onClick={/*() => setQuestions([...questions, { question: "", option1: "", option2: "", option3: "", option4: "" }])*/() => incQues()} />
+					
                 </div>
             </div>
 

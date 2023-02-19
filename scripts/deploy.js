@@ -1,5 +1,5 @@
 const main = async () => {
-  const contractFactory = await hre.ethers.getContractFactory('Lock');
+  const contractFactory = await hre.ethers.getContractFactory('CryptQuiz');
   const contract = await contractFactory.deploy();
   await contract.deployed();
   console.log("Contract deployed to:", contract.address);
