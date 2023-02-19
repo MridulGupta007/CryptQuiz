@@ -114,7 +114,31 @@ export default function AuthHolder() {
 
     }, [initialized, loggedIn, loading]);
 
-
+    useEffect(()=>{
+        const addHyperSpace = async () => {
+            try{
+              await auth.provider.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainId: '0xC45',
+                  chainName: 'Filecoin - Hyperspace testnet',
+                  rpcUrls: ['https://filecoin-hyperspace.chainstacklabs.com/rpc/v1', 'https://api.hyperspace.node.glif.io/rpc/v1'],
+                  blockExplorerUrls: ['https://hyperspace.filfox.info/en', ],
+                  nativeCurrency: {
+                    name: 'USD',
+                    symbol: '$', // 2-6 characters long
+                    decimals: 18
+                  }
+                }]
+              })
+            } catch(e){
+              console.log(e)
+            }
+          }
+          
+          if (loggedIn)
+            addHyperSpace()
+    },[loggedIn])
 
     return {
         initializeAuth,
@@ -125,6 +149,7 @@ export default function AuthHolder() {
         loading,
         initialized,
         loggedIn,
-        account
+        account,
+        auth
     };
 }

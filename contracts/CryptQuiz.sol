@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 contract CryptQuiz {
     struct Quiz {
+        string name;
         address manager;
         //(gas fees + winning amount)
         uint256 totalFund;
@@ -12,10 +13,12 @@ contract CryptQuiz {
         uint256 prizeMoney;
         //uint remainingAmount;
 
+        uint256 totalQuestions;
         string imageCID;
         string questionCID;
         uint256 totalParticipants;
         uint256[] leaderboard;
+        bool isExpired;
     }
 
     struct User {
@@ -30,7 +33,7 @@ contract CryptQuiz {
 
     uint256 constant MINAMOUNT = 1500000000000000000;
     uint256 constant GASFEES = 300000000000000000;
-    uint256 quizId;
+    uint256 public quizId;
     address owner;
 
     //quizId => Quiz
@@ -48,17 +51,25 @@ contract CryptQuiz {
         owner = msg.sender;
     }
 
+    function getQuizId() public view returns (uint256) {
+        return quizId;
+    }
+
     function listQuiz(
+        string memory _name,
         string memory _theme,
         uint256 _time,
         uint256 _totalFund,
         string memory _questionCID,
-        string memory _imageCID
+        string memory _imageCID,
+        uint256 _totalQuestions
     ) public payable {
         require(msg.value == _totalFund);
         require(_totalFund > GASFEES);
 
         quizId++;
+
+        quizzes[quizId].name = _name;
 
         quizzes[quizId].manager = msg.sender;
 
@@ -70,13 +81,11 @@ contract CryptQuiz {
 
         quizzes[quizId].prizeMoney = _totalFund - GASFEES;
 
+        quizzes[quizId].totalQuestions = _totalQuestions;
+
         quizzes[quizId].imageCID = _imageCID;
 
         quizzes[quizId].questionCID = _questionCID;
-    }
-
-    function getRemainingTime(uint256 _quizId) public view returns (uint256) {
-        return quizzes[_quizId].startTime - block.timestamp;
     }
 
     function prizeDispersal(
@@ -84,10 +93,14 @@ contract CryptQuiz {
         uint256 _quizId,
         uint256 _usedGas
     ) public {
-        require(block.timestamp > quizzes[_quizId].startTime + 180);
+        require(
+            block.timestamp > quizzes[_quizId].startTime,
+            "Quiz has not been ended yet"
+        );
         payable(_winner).transfer(quizzes[_quizId].prizeMoney);
         uint256 _remainingAmount = GASFEES - _usedGas;
         payable(quizzes[_quizId].manager).transfer(_remainingAmount);
+        quizzes[_quizId].isExpired = true;
     }
 
     function setQuiztotalParticipants(
@@ -103,6 +116,22 @@ contract CryptQuiz {
         quizzes[_quizId].leaderboard.push(_score);
     }
 
+    function getQuizOrganizationName(uint256 _quizId)
+        public
+        view
+        returns (string memory)
+    {
+        return quizzes[_quizId].name;
+    }
+
+    function getQuizRemainingTime(uint256 _quizId)
+        public
+        view
+        returns (uint256)
+    {
+        return quizzes[_quizId].startTime - block.timestamp;
+    }
+
     function getQuizManager(uint256 _quizId) public view returns (address) {
         return quizzes[_quizId].manager;
     }
@@ -116,11 +145,19 @@ contract CryptQuiz {
     }
 
     function getQuizTime(uint256 _quizId) public view returns (uint256) {
-        return quizzes[_quizId].time;
+        return quizzes[_quizId].startTime;
     }
 
     function getQuizPrizeMoney(uint256 _quizId) public view returns (uint256) {
         return quizzes[_quizId].prizeMoney;
+    }
+
+    function getQuizTotalQuestions(uint256 _quizId)
+        public
+        view
+        returns (uint256)
+    {
+        return quizzes[_quizId].totalQuestions;
     }
 
     function getQuizQuestionCID(uint256 _quizId)
@@ -147,13 +184,19 @@ contract CryptQuiz {
         return quizzes[_quizId].totalParticipants;
     }
 
-    function getLeaderboard(uint256 _quizId)
+    function getQuizLeaderboard(uint256 _quizId)
         external
         view
         returns (uint256[] memory)
     {
         return quizzes[_quizId].leaderboard;
     }
+
+    function getQuizIsExpired(uint256 _quizId) external view returns (bool) {
+        return quizzes[_quizId].isExpired;
+    }
+
+    //Participants
 
     // this function will be called for every participant
     function completedQuiz(
