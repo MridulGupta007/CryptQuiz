@@ -1,5 +1,8 @@
 import React from "react";
 import { BsTwitter, BsGithub } from "react-icons/bs";
+//import profiles from "./Details/teamDetails.js";
+import {useState} from "react";
+
 const Team = () => {
     return (
         <div className="flex flex-col items-center gap-[150px] bg-primary">
@@ -10,10 +13,10 @@ const Team = () => {
                     </h1>
                     <div className="flex justify-between mt-20 min-w-[60rem] lg:min-w-[80rem]">
                         {/* you can pass images, roles, and links as a prop to these cards */}
-                        <ProfileCard />
-                        <ProfileCard />
-                        <ProfileCard />
-                        <ProfileCard />
+                        <ProfileCard src="./Images/Ankit.png" name="Ankit Choudhary" role="Blockchain Developer"/>
+                        <ProfileCard src="./Images/Atharv.png" name="Atharv Varshney" role="Front-End Developer"/>
+                        <ProfileCard src="./Images/Gourav.png" name="Gourav Kumar" role="Front-End Developer"/>
+                        <ProfileCard src="./Images/Mridul.png" name="Mridul Gupta" role="Front-End Developer"/>
                     </div>
                 </div>
             </div>
@@ -33,15 +36,17 @@ const Team = () => {
 
 export default Team;
 
-const ProfileCard = () => {
+const ProfileCard = ({name, role, src}) => {
+    
     return (
+        
         <div className="flex flex-col items-center py-5 h-[16em] w-[14rem] bg-black border-[2px] border-gray-900 rounded-2xl">
             <div className=" h-24 w-24 bg-yellow-300 rounded-full">
-                <img />
+                <img src={src}/>
             </div>
             <div className="flex flex-col items-center mt-4">
-                <h2 className="font-bold">Name Title</h2>
-                <p className="text-gray-600">Role</p>
+                <h2 className="font-bold">{name}</h2>
+                <p className="text-gray-600">{role}</p>
             </div>
             <div>
                 <button className="flex mt-3">
@@ -54,5 +59,7 @@ const ProfileCard = () => {
                 </button>
             </div>
         </div>
+        
+        
     );
 };
