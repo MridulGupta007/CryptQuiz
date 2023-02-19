@@ -4,37 +4,52 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import QuizHolder from "./Context/QuizHolder";
 import AuthHolder from "./Context/AuthHolder";
 
-import Home from "./Pages/Home";
 import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 import Loader from "./Components/Loader";
+import Home from "./Pages/Home";
+import Profile from "./Pages/Profile";
 import AddQuestions from "./Pages/AddQuestions";
 import QuizStart from "./Pages/QuizStart";
 import Quiz from "./Pages/Quiz";
 import QuizResult from "./Pages/QuizResult";
 
+const AppendHeaderFooter = ({ Comp }) => {
+    return (
+        <>
+            <Header />
+            <Comp />
+            <Footer />
+        </>
+    )
+}
 
 function App() {
 
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <Home />,
+            element: <AppendHeaderFooter Comp={Home} />,
         },
         {
             path: "/host-quiz",
-            element: <AddQuestions />,
+            element: <AppendHeaderFooter Comp={AddQuestions} />,
+        },
+        {
+            path: "/profile",
+            element: <AppendHeaderFooter Comp={Profile} />,
         },
         {
             path: "/quiz-start",
-            element: <QuizStart />,
+            element: <AppendHeaderFooter Comp={QuizStart} />,
         },
         {
             path: "/quiz",
-            element: <Quiz />,
+            element: <AppendHeaderFooter Comp={Quiz} />,
         },
         {
             path: "/quiz-result",
-            element: <QuizResult />,
+            element: <AppendHeaderFooter Comp={QuizResult} />,
         },
     ]);
 
@@ -45,7 +60,7 @@ function App() {
     return (
         <div className="bg-primaryBg flex flex-col text-white font-inter min-h-screen">
 
-            <Header />
+            {/* <Header /> */}
 
             <QuizHolder>
                 {

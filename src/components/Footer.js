@@ -2,12 +2,12 @@ import React from "react";
 import { ReactComponent as Logo } from "../Assets/logo.svg";
 
 const Footer = () => {
-  return (
-    <div className="flex justify-between items-center px-12 xl:px-32 h-16 bg-black border-2 border-gray-800">
-      <Logo className="h-5 w-32" />
-      <p className="text-gray-500">Built by amazing peeps. All rights reserved.</p>
-    </div>
-  );
+    return (
+        <div className="flex justify-between items-center mt-[100px] px-12 xl:px-32 py-[25px] bg-black/25 rounded-t-[20px] border-white/10 border-primaryWidth">
+            <p className='font-mammoth font-normal text-[30px] leading-[32px] text-white/80'>CryptQuiz</p>
+            <p className="text-white/50">Built by amazing peeps. All rights reserved.</p>
+        </div>
+    );
 };
 
 export default Footer;

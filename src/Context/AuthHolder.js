@@ -47,10 +47,8 @@ export default function AuthHolder() {
     const getAccounts = async () => {
         if (initialized) {
             try {
-                console.log("before")
                 const accounts = await auth.provider.request({ method: 'eth_accounts' })
                 console.log({ accounts })
-                console.log("after")
                 return (accounts)
             }
             catch (e) {
@@ -67,6 +65,25 @@ export default function AuthHolder() {
         }
     };
 
+    function setHooks() {
+        auth.provider.on('connect', async (params) => {
+            console.log({ type: 'connect', params: params })
+
+            const isLoggedIn = await auth.isLoggedIn()
+            setLoggedIn(isLoggedIn)
+
+            const acc = await getAccounts();
+            setAccount(acc[0])
+        })
+        auth.provider.on('accountsChanged', (params) => {
+            //Handle
+            console.log({ type: 'accountsChanged', params: params })
+        })
+        auth.provider.on('chainChanged', async (params) => {
+            console.log({ type: 'chainChanged', params: params })
+        })
+    }
+
     // Initializing Auth
     const initialize = async () => {
         setLoading(true)
@@ -81,9 +98,7 @@ export default function AuthHolder() {
     useEffect(() => {
         const checkLogin = async () => {
             await auth.init();
-            if (await auth.isLoggedIn()) {
-                setLoggedIn(true);
-            }
+            setHooks()
         };
         checkLogin();
     }, [initialized, loggedIn, loading]);
@@ -98,6 +113,8 @@ export default function AuthHolder() {
         }
 
     }, [initialized, loggedIn, loading]);
+
+
 
     return {
         initializeAuth,

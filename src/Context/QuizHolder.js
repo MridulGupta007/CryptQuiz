@@ -7,7 +7,7 @@ export default function QuizHolder(props) {
     const [score, setScore] = useState(0)
 
     return (
-        <QuizContext.Provider value={{ score }}>
+        <QuizContext.Provider value={{ score, setScore }}>
             {props.children}
         </QuizContext.Provider>
     )
