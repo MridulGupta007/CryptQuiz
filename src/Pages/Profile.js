@@ -76,7 +76,7 @@ const Profile = () => {
                 </div>
 
 
-                <div className="flex justify-center">
+              { /* <div className="flex justify-center">
                     <h3 className="text-[50px]">Your Certificates</h3>
                 </div>
 
@@ -134,7 +134,7 @@ const Profile = () => {
 
 
 
-                </div>
+                </div> */}
 
 
 
