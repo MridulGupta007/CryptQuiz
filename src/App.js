@@ -62,13 +62,13 @@ function App() {
 
             {/* <Header /> */}
 
-            <QuizHolder>
+           { <QuizHolder>
                 {
                     loading
                         ? <Loader />
                         : <RouterProvider router={router} />
                 }
-            </QuizHolder>
+            </QuizHolder>}
 
             {/* <Footer /> */}
 

@@ -26,10 +26,10 @@ export default function HeroSection() {
                     </h1>
                 </div>
                 <div className="flex justify-center items-center gap-[50px]">
-                    <button className="px-5 py-3 bg-black/25 rounded-[10px] border-white/10 border-primaryWidth font-semibold text-lg">
+                    <button className="px-5 py-3 bg-black/25 rounded-[10px] border-white/10 border-primaryWidth font-semibold text-lg hover:bg-white hover:text-black ease-in-out duration-500">
                         Explore
                     </button>
-                    <button className="px-5 py-3 bg-black/25 rounded-[10px] border-white/10 border-primaryWidth font-semibold text-lg">
+                    <button className="px-5 py-3 bg-black/25 rounded-[10px] border-white/10 border-primaryWidth font-semibold text-lg hover:bg-white hover:text-black ease-in-out duration-500">
                         Organize
                     </button>
                 </div>
